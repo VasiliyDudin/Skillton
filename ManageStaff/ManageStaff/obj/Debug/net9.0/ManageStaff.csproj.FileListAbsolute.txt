@@ -26,3 +26,4 @@ C:\Skillton\Skillton\ManageStaff\ManageStaff\obj\Debug\net9.0\refint\ManageStaff
 C:\Skillton\Skillton\ManageStaff\ManageStaff\obj\Debug\net9.0\ManageStaff.pdb
 C:\Skillton\Skillton\ManageStaff\ManageStaff\obj\Debug\net9.0\ManageStaff.genruntimeconfig.cache
 C:\Skillton\Skillton\ManageStaff\ManageStaff\obj\Debug\net9.0\ref\ManageStaff.dll
+C:\Skillton\Skillton\ManageStaff\ManageStaff\obj\Debug\net9.0\ManageStaff.sourcelink.json

@@ -20,11 +20,11 @@
             do
             {
                 Console.Clear();
-                DisplayMenu();//Отображаем меню
+                DisplayMenu(); //Отображаем меню
 
                 key = Console.ReadKey(true).Key;
 
-                switch (key)
+                switch (key) //Установка значения индекса при нажатии соответствующих кнопок
                 {
                     case ConsoleKey.UpArrow:
                         _index = _index == 0 ? _menuItems.Count - 1 : _index - 1;
@@ -42,12 +42,12 @@
 
         private void DisplayMenu()
         {
-            Console.WriteLine(_title);
+            Console.WriteLine(_title); //выводим заголовок
             Console.WriteLine("----------------------------");
 
             for (int i = 0; i < _menuItems.Count; i++)
             {
-                if (i == _index)
+                if (i == _index) //установки для выбранного пункта меню
                 {
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.White;

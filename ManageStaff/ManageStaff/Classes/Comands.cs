@@ -1,5 +1,6 @@
 ﻿using ManageStaff.interfaces;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 
@@ -11,24 +12,43 @@ namespace ManageStaff.Classes
     internal class Comands : IComands, IDisposable
     {
         string _connectionStr; //Строка подключения к БД
-        static SqlConnection _connection; //Соединение с БД
+        readonly SqlConnection _connection; //Соединение с БД
+
+        #region наименование столбцов БД
+        const string _id = "EmployeeID";
+        const string _firstName = "FirstName";
+        const string _lastName = "LastName";
+        const string _email = "Email";
+        const string _date = "DateOfBirth";
+        const string _salary = "Salary";
+        #endregion
 
         public Comands()
         {
             _connectionStr = ConfigurationManager.ConnectionStrings["connectToEmployeeDB"].ConnectionString;
+            if(!string.IsNullOrWhiteSpace(_connectionStr))
+                _connection = new SqlConnection(_connectionStr);
+        }
+
+        //Метод для открытия соединения с БД
+        public async Task OpenConnectionAsync()
+        {
+            if (_connection != null && _connection.State != ConnectionState.Open)
+            {
+                await _connection.OpenAsync();
+            }
         }
 
         //Метод для добавления нового сотрудника
-        public bool AddEmployee(Employee empl)
+        public async Task<bool> AddEmployeeAsync(Employee empl)
         {
             bool result = false;
 
-            using (_connection = new SqlConnection(_connectionStr))
-            {
-                string query = "INSERT INTO Employees (FirstName, LastName, Email, DateOfBirth, Salary) " +
-                               "VALUES (@FirstName, @LastName, @Email, @DateOfBirth, @Salary)";
+            string query = $"INSERT INTO Employees ({_firstName}, {_lastName}, {_email}, {_date}, {_salary}) " +
+                            "VALUES (@FirstName, @LastName, @Email, @DateOfBirth, @Salary)";
 
-                SqlCommand command = new SqlCommand(query, _connection);
+            using (SqlCommand command = new SqlCommand(query, _connection))
+            {
                 command.Parameters.AddWithValue("@FirstName", empl.FirstName);
                 command.Parameters.AddWithValue("@LastName", empl.LastName);
                 command.Parameters.AddWithValue("@Email", empl.Email);
@@ -37,16 +57,11 @@ namespace ManageStaff.Classes
 
                 try
                 {
-                    _connection.Open();
-                    result = command.ExecuteNonQuery() > 0;
+                    result = await command.ExecuteNonQueryAsync() > 0;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-                finally
-                {
-                    _connection.Close();
                 }
             }
 
@@ -54,57 +69,52 @@ namespace ManageStaff.Classes
         }
 
         //Метод для отображения всей информации по сотрудникам из БД
-        public bool ShowStaff()
+        public async Task<bool> ShowStaffAsync()
         {
+            bool result = false;
+            string query = $"SELECT {_id},{_firstName},{_lastName},{_email},{_date},{_salary} FROM Employees ORDER BY {_id}";
+
             Console.WriteLine("\nСписок сотрудников:\n");
 
-            using (_connection = new SqlConnection(_connectionStr))
+            using (SqlCommand command = new SqlCommand(query, _connection))
             {
-                string query = "SELECT EmployeeID,FirstName,LastName,Email,DateOfBirth,Salary FROM Employees ORDER BY EmployeeID";
-                SqlCommand command = new SqlCommand(query, _connection);
-
                 try
                 {
-                    _connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
-                        Console.WriteLine($"{reader["EmployeeID"].ToString().Trim()} | {reader["FirstName"].ToString().Trim()} {reader["LastName"].ToString().Trim()}   " +
-                                          $"{reader["Email"].ToString().Trim()} {reader["DateOfBirth"].ToString().Trim()}   {reader["Salary"].ToString().Trim()}");
+                        Console.WriteLine($"{reader[_id].ToString().Trim()} | {reader[_firstName].ToString().Trim()} {reader[_lastName].ToString().Trim()}   " +
+                                          $"{reader[_email].ToString().Trim()} {reader[_date].ToString().Trim()}   {reader[_salary].ToString().Trim()}");
                     }
-                    reader.Close();
+                    await reader.CloseAsync();
+                    result = true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
-                    return false;
-                }
-                finally
-                {
-                    _connection.Close();
                 }
             }
 
-            return true;
+            return result;
         }
 
         //Метод для обновления конкретной информации по сотруднику
-        public bool UpdateEmployee(string empId)
+        public async Task<bool> UpdateEmployeeAsync(string empId)
         {
             bool result = false;
-
             int id;
+
             while (!int.TryParse(empId, out id))
             {
                 Console.Write("Неверный формат ID. Введите снова: ");
                 empId = Console.ReadLine();
             }
 
-            using (_connection = new SqlConnection(_connectionStr))
+            string query = $"SELECT {_id},{_firstName},{_lastName},{_email},{_date},{_salary} FROM Employees WHERE {_id} = @EmployeeID";
+
+            using (SqlCommand command = new SqlCommand(query, _connection))
             {
-                string query = "SELECT EmployeeID,FirstName,LastName,Email,DateOfBirth,Salary FROM Employees WHERE EmployeeID = @EmployeeID";
-                SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@EmployeeID", id);
 
                 string[] values = new string[5]; //Массив для хранения значений по сотруднику
@@ -112,30 +122,28 @@ namespace ManageStaff.Classes
 
                 try
                 {
-                    _connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    SqlDataReader reader = await command.ExecuteReaderAsync();
                     if (!reader.HasRows) //Если из БД не вернулось ни одной строки выходим с соответствующим сообщением
                     {
                         Console.WriteLine("Сотрудник с таким ID не найден.");
+                        await reader.CloseAsync();
                         return result;
                     }
 
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
-                        values[indx] = reader["FirstName"].ToString().Trim();
-                        values[++indx] = reader["LastName"].ToString().Trim();
-                        values[++indx] = reader["Email"].ToString().Trim();
-                        values[++indx] = reader["DateOfBirth"].ToString().Trim();
-                        values[++indx] = reader["Salary"].ToString().Trim();
+                        values[indx] = reader[_firstName].ToString().Trim();
+                        values[++indx] = reader[_lastName].ToString().Trim();
+                        values[++indx] = reader[_email].ToString().Trim();
+                        values[++indx] = reader[_date].ToString().Trim();
+                        values[++indx] = reader[_salary].ToString().Trim();
                     }
+
+                    await reader.CloseAsync();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-                finally
-                {
-                    _connection.Close();
                 }
 
                 indx = 0;
@@ -153,7 +161,7 @@ namespace ManageStaff.Classes
                 Validation validator = new Validation(); //Для валидации вводимых значений
 
                 query = "UPDATE Employees SET "; //формируем запрос к БД
-                string input = string.Empty;
+                string input = string.Empty; //Новое значение введенное пользователем из консоли
                 bool isRun = true, isUpdate = false;
 
                 while (isRun)
@@ -172,8 +180,8 @@ namespace ManageStaff.Classes
                                 Console.ReadKey(true);
                                 break;
                             }
-                            if (!query.Contains("FirstName")) //Что-бы не дублировать
-                                query += "FirstName = @FirstName, ";
+                            if (!query.Contains(_firstName)) //Что-бы не дублировать
+                                query += $"{_firstName} = @FirstName, ";
                             isUpdate = true;
                             break;
                         case 1:
@@ -186,8 +194,8 @@ namespace ManageStaff.Classes
                                 Console.ReadKey(true);
                                 break;
                             }
-                            if (!query.Contains("LastName"))
-                                query += "LastName = @LastName, ";
+                            if (!query.Contains(_lastName))
+                                query += $"{_lastName} = @LastName, ";
                             isUpdate = true;
                             break;
                         case 2:
@@ -200,8 +208,8 @@ namespace ManageStaff.Classes
                                 Console.ReadKey(true);
                                 break;
                             }
-                            if (!query.Contains("Email"))
-                                query += "Email = @Email, ";
+                            if (!query.Contains(_email))
+                                query += $"{_email} = @Email, ";
                             isUpdate = true;
                             break;
                         case 3:
@@ -213,8 +221,8 @@ namespace ManageStaff.Classes
                                 Console.ReadKey(true);
                                 break;
                             }
-                            if (!query.Contains("DateOfBirth"))
-                                query += "DateOfBirth = @DateOfBirth, ";
+                            if (!query.Contains(_date))
+                                query += $"{_date} = @DateOfBirth, ";
                             isUpdate = true;
                             break;
                         case 4:
@@ -227,8 +235,8 @@ namespace ManageStaff.Classes
                                 Console.ReadKey(true);
                                 break;
                             }
-                            if (!query.Contains("Salary"))
-                                query += "Salary = @Salary, ";
+                            if (!query.Contains(_salary))
+                                query += $"{_salary} = @Salary, ";
                             isUpdate = true;
                             break;
                         case -1: //При нажатии кнопки ESC
@@ -240,33 +248,28 @@ namespace ManageStaff.Classes
                 if (!isUpdate) //Если не установлено ни одного нового значения, выходим из меню без обновления БД
                     return result;
 
-                query = query.TrimEnd(',', ' ') + " WHERE EmployeeID = @EmployeeID";
+                query = query.TrimEnd(',', ' ') + $" WHERE {_id} = @EmployeeID";
 
-                command = new SqlCommand(query, _connection);
-                command.Parameters.AddWithValue("@EmployeeID", id);
-                if (query.Contains("FirstName")) //Проверяем есть ли в запросе данный параметр для записи его значения
-                    command.Parameters.AddWithValue("@FirstName", values[0]);
-                if (query.Contains("LastName"))
-                    command.Parameters.AddWithValue("@LastName", values[1]);
-                if (query.Contains("Email"))
-                    command.Parameters.AddWithValue("@Email", values[2]);
-                if (query.Contains("DateOfBirth"))
-                    command.Parameters.AddWithValue("@DateOfBirth", values[3]);
-                if (query.Contains("Salary"))
-                    command.Parameters.AddWithValue("@Salary", decimal.Parse(values[4]));
+                SqlCommand command2 = new SqlCommand(query, _connection);
+                command2.Parameters.AddWithValue("@EmployeeID", id);
+                if (query.Contains(_firstName)) //Проверяем есть ли в запросе данный параметр для записи его значения
+                    command2.Parameters.AddWithValue("@FirstName", values[0]);
+                if (query.Contains(_lastName))
+                    command2.Parameters.AddWithValue("@LastName", values[1]);
+                if (query.Contains(_email))
+                    command2.Parameters.AddWithValue("@Email", values[2]);
+                if (query.Contains(_date))
+                    command2.Parameters.AddWithValue("@DateOfBirth", values[3]);
+                if (query.Contains(_salary))
+                    command2.Parameters.AddWithValue("@Salary", decimal.Parse(values[4]));
 
                 try
                 {
-                    _connection.Open();
-                    result = command.ExecuteNonQuery() > 0;
+                    result = await command2.ExecuteNonQueryAsync() > 0;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-                finally
-                {
-                    _connection.Close();
                 }
             }
 
@@ -274,7 +277,7 @@ namespace ManageStaff.Classes
         }
 
         //Метод для удаления сотрудника по ID
-        public bool DeleteEmployee(string empId)
+        public async Task<bool> DeleteEmployeeAsync(string empId)
         {
             bool result = false;
 
@@ -285,24 +288,19 @@ namespace ManageStaff.Classes
                 empId = Console.ReadLine();
             }
 
-            using (_connection = new SqlConnection(_connectionStr))
+            string query = $"DELETE FROM Employees WHERE {_id} = @EmployeeID";
+
+            using (SqlCommand command = new SqlCommand(query, _connection))
             {
-                string query = "DELETE FROM Employees WHERE EmployeeID = @EmployeeID";
-                SqlCommand command = new SqlCommand(query, _connection);
                 command.Parameters.AddWithValue("@EmployeeID", id);
 
                 try
                 {
-                    _connection.Open();
-                    result = command.ExecuteNonQuery() > 0;
+                    result = await command.ExecuteNonQueryAsync() > 0;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-                finally
-                {
-                    _connection.Close();
                 }
             }
 

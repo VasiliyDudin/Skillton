@@ -168,11 +168,15 @@ namespace ManageStaff.Classes
                 {
                     int selectedIndex = menu.Run();
 
+                    if (selectedIndex >= 0)
+                    {
+                        Console.WriteLine(values[selectedIndex]);
+                        input = Console.ReadLine();
+                    }
+
                     switch (selectedIndex)
                     {
                         case 0:
-                            Console.WriteLine(values[selectedIndex]);
-                            input = Console.ReadLine();
                             values[selectedIndex] = validator.CheckName(input) ? input : values[selectedIndex];
                             if (values[selectedIndex] != input)
                             {
@@ -185,8 +189,6 @@ namespace ManageStaff.Classes
                             isUpdate = true;
                             break;
                         case 1:
-                            Console.WriteLine(values[selectedIndex]);
-                            input = Console.ReadLine();
                             values[selectedIndex] = validator.CheckName(input) ? input : values[selectedIndex];
                             if (values[selectedIndex] != input)
                             {
@@ -199,8 +201,6 @@ namespace ManageStaff.Classes
                             isUpdate = true;
                             break;
                         case 2:
-                            Console.WriteLine(values[selectedIndex]);
-                            input = Console.ReadLine();
                             values[selectedIndex] = validator.CheckEmail(input) ? input : values[selectedIndex];
                             if (values[selectedIndex] != input)
                             {
@@ -213,9 +213,8 @@ namespace ManageStaff.Classes
                             isUpdate = true;
                             break;
                         case 3:
-                            Console.WriteLine(values[selectedIndex]);
-                            input = Console.ReadLine();
-                            if (!validator.CheckDate(input, out values[selectedIndex]))
+                            values[selectedIndex] = validator.CheckDate(input, out _) ? input : values[selectedIndex];
+                            if (values[selectedIndex] != input)
                             {
                                 Console.WriteLine("Дата не валидная!");
                                 Console.ReadKey(true);
@@ -226,9 +225,7 @@ namespace ManageStaff.Classes
                             isUpdate = true;
                             break;
                         case 4:
-                            Console.WriteLine(values[selectedIndex]);
-                            input = Console.ReadLine();
-                            values[selectedIndex] = validator.CheckSalary(input) ? input : values[selectedIndex];
+                            values[selectedIndex] = validator.CheckSalary(input, out _) ? input : values[selectedIndex];
                             if (values[selectedIndex] != input)
                             {
                                 Console.WriteLine("Зарплата не валидная!");

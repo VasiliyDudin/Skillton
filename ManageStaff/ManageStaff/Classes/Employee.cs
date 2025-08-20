@@ -7,7 +7,7 @@
         string _firstName;
         string _lastName;
         string _email;
-        string _dateOfBirth;
+        DateTime _dateOfBirth;
         decimal _salary;
 
         public int EmployeeID
@@ -34,7 +34,7 @@
             set => _email = value;
         }
 
-        public string DateOfBirth
+        public DateTime DateOfBirth
         {
             get => _dateOfBirth;
             set => _dateOfBirth = value;
@@ -51,7 +51,8 @@
         {
             Employee emp = new Employee();
             Validation validator = new Validation(); //Для валидации вводимых значений
-            string fname, lname, email, data; //Набор переменных соответствующий вводимым значениям
+            string fname, lname, email;
+            DateTime data; //Набор переменных соответствующий вводимым значениям
             decimal salary;
 
             Console.WriteLine("\nДобавление нового сотрудника:");

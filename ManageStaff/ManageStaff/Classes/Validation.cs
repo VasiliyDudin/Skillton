@@ -29,15 +29,12 @@ namespace ManageStaff.Classes
         }
 
         //Проверяем корректность даты
-        public bool CheckDate(string str, out string dataBirth)
+        public bool CheckDate(string str, out DateTime dataBirth)
         {
             bool result = true;
-            DateTime date = new DateTime();
 
-            if (!DateTime.TryParse(str, out date))
+            if (!DateTime.TryParse(str, out dataBirth))
                 result = false;
-
-            dataBirth = date.ToString();
 
             return result;
         }
@@ -46,17 +43,6 @@ namespace ManageStaff.Classes
         public bool CheckSalary(string str, out decimal salary)
         {
             bool result = true;
-
-            if (!decimal.TryParse(str, out salary))
-                result = false;
-
-            return result;
-        }
-
-        public bool CheckSalary(string str)
-        {
-            bool result = true;
-            decimal salary;
 
             if (!decimal.TryParse(str, out salary))
                 result = false;

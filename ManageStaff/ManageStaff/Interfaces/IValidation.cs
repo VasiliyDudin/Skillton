@@ -1,6 +1,8 @@
 ﻿namespace ManageStaff.interfaces
 {
-    //Интерфейс для валидации значений
+    ///<summery>
+    ///Интерфейс для валидации значений
+    ///</summery>
     internal interface IValidation
     {
         bool CheckName(string name);

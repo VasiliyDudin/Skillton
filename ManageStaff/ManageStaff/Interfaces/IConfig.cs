@@ -1,6 +1,8 @@
 ﻿namespace ManageStaff.interfaces
 {
-    //Интерфейс для получения информации из конфига
+    ///<summery>
+    ///Интерфейс для получения информации из конфига
+    ///</summery>
     internal interface IConfig
     {
         string? GetMenuTitle();

@@ -1,15 +1,18 @@
-﻿using ManageStaff.interfaces;
+﻿using ManageStaff.Classes;
+using ManageStaff.interfaces;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
 
-namespace ManageStaff.Classes
+namespace ManageStaff.DataBase
 {
-    //Класс для выполнения CRUD операций с БД
-    //Содержит соединения с БД
-    //Реализует интерфейс IDisposable
-    internal class Comands : IComands, IDisposable
+    ///<summery>
+    ///Класс для выполнения CRUD операций с БД
+    ///Содержит соединения с БД
+    ///Реализует интерфейс IDisposable
+    ///</summery>
+    internal class DbCommand : IComands, IDisposable
     {
         string _connectionStr; //Строка подключения к БД
         readonly SqlConnection _connection; //Соединение с БД
@@ -23,15 +26,17 @@ namespace ManageStaff.Classes
         const string _salary = "Salary";
         #endregion
 
-        public Comands()
+        public DbCommand()
         {
             _connectionStr = ConfigurationManager.ConnectionStrings["connectToEmployeeDB"].ConnectionString;
-            if(!string.IsNullOrWhiteSpace(_connectionStr))
+            if (!string.IsNullOrWhiteSpace(_connectionStr))
                 _connection = new SqlConnection(_connectionStr);
         }
 
-        //Метод для открытия соединения с БД
-        public async Task OpenConnectionAsync()
+        ///<summery>
+        ///Метод для открытия соединения с БД
+        ///</summery>
+        public async Task OpenConnectionDbAsync()
         {
             if (_connection != null && _connection.State != ConnectionState.Open)
             {
@@ -39,10 +44,15 @@ namespace ManageStaff.Classes
             }
         }
 
-        //Метод для добавления нового сотрудника
+        ///<summery>
+        ///Метод для добавления нового сотрудника
+        ///</summery>
         public async Task<bool> AddEmployeeAsync(Employee empl)
         {
             bool result = false;
+
+            if (empl == null)
+                return result;
 
             string query = $"INSERT INTO Employees ({_firstName}, {_lastName}, {_email}, {_date}, {_salary}) " +
                             "VALUES (@FirstName, @LastName, @Email, @DateOfBirth, @Salary)";
@@ -68,7 +78,9 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Метод для отображения всей информации по сотрудникам из БД
+        ///<summery>
+        ///Метод для отображения всей информации по сотрудникам из БД
+        ///</summery>
         public async Task<bool> ShowStaffAsync()
         {
             bool result = false;
@@ -87,6 +99,7 @@ namespace ManageStaff.Classes
                         Console.WriteLine($"{reader[_id].ToString().Trim()} | {reader[_firstName].ToString().Trim()} {reader[_lastName].ToString().Trim()}   " +
                                           $"{reader[_email].ToString().Trim()} {reader[_date].ToString().Trim()}   {reader[_salary].ToString().Trim()}");
                     }
+
                     await reader.CloseAsync();
                     result = true;
                 }
@@ -99,10 +112,12 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Метод для обновления конкретной информации по сотруднику
-        public async Task<bool> UpdateEmployeeAsync(string empId)
+        ///<summery>
+        ///Метод для обновления конкретной информации по сотруднику
+        ///</summery>
+        public async Task<bool?> UpdateEmployeeAsync(string empId)
         {
-            bool result = false;
+            bool? result = false;
             int id;
 
             while (!int.TryParse(empId, out id))
@@ -127,7 +142,7 @@ namespace ManageStaff.Classes
                     {
                         Console.WriteLine("Сотрудник с таким ID не найден.");
                         await reader.CloseAsync();
-                        return result;
+                        return null;
                     }
 
                     while (await reader.ReadAsync())
@@ -148,19 +163,12 @@ namespace ManageStaff.Classes
 
                 indx = 0;
 
-                List<string> menuItems = new List<string>() //формируем пункты меню
-                {
-                    "Имя: " + values[indx],
-                    "Фамилия: " + values[++indx],
-                    "Эл. почта: " + values[++indx],
-                    "Дата рождения (гггг-мм-дд): " + values[++indx],
-                    "Зарплата: " + values[++indx]
-                };
-
-                ConsoleMenu menu = new ConsoleMenu("Обновление информации (Нажмите ESC для выхода в основное меню)", menuItems);
+                ConsoleMenu menu = new ConsoleMenu();//"Обновление информации (Нажмите ESC для выхода в основное меню)", menuItems);
+                menu.Title = "Обновление информации (Нажмите ESC для выхода в основное меню)";
+                menu.MenuItems = CreateMenuItems(values.ToList());
                 Validation validator = new Validation(); //Для валидации вводимых значений
 
-                query = "UPDATE Employees SET "; //формируем запрос к БД
+                query = "UPDATE Employees SET "; //Формируем запрос к БД
                 string input = string.Empty; //Новое значение введенное пользователем из консоли
                 bool isRun = true, isUpdate = false;
 
@@ -240,10 +248,16 @@ namespace ManageStaff.Classes
                             isRun = false;
                             break;
                     }
+
+                    menu.MenuItems = CreateMenuItems(values.ToList());
                 }
 
                 if (!isUpdate) //Если не установлено ни одного нового значения, выходим из меню без обновления БД
-                    return result;
+                    return null;
+
+                Console.WriteLine("Для выхода без сохранения изменений, введите - N");
+                if (Console.ReadKey(true).Key == ConsoleKey.N)
+                    return null;
 
                 query = query.TrimEnd(',', ' ') + $" WHERE {_id} = @EmployeeID";
 
@@ -273,7 +287,9 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Метод для удаления сотрудника по ID
+        ///<summery>
+        ///Метод для удаления сотрудника по ID
+        ///</summery>
         public async Task<bool> DeleteEmployeeAsync(string empId)
         {
             bool result = false;
@@ -304,14 +320,16 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Метод для освобождения ресурсов, вызывается при выборе пункта меню - "Выйдите из приложения"
+        ///<summery>
+        ///Метод для освобождения ресурсов, вызывается при выборе пункта меню - "Выйдите из приложения"
+        ///</summery>
         public void Dispose()
         {
             try
             {
                 if (_connection != null)
                 {
-                    if (_connection.State != System.Data.ConnectionState.Closed)
+                    if (_connection.State != ConnectionState.Closed)
                     {
                         _connection.Close();
                     }
@@ -322,6 +340,21 @@ namespace ManageStaff.Classes
             {
                 Console.WriteLine($"Ошибка при завершении работы: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Формируем пункты меню
+        /// </summary>
+        List<string> CreateMenuItems(List<string> items, int indx = 0)
+        {
+            return new List<string>()
+            {
+                "Имя: " + items[indx],
+                "Фамилия: " + items[++indx],
+                "Эл. почта: " + items[++indx],
+                "Дата рождения (гггг-мм-дд): " + items[++indx],
+                "Зарплата: " + items[++indx]
+            };
         }
     }
 }

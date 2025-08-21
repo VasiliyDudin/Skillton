@@ -3,10 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace ManageStaff.Classes
 {
-    //Класс для простой валидации значений
+    ///<summary>
+    ///Класс для простой валидации значений
+    ///</summery>
     internal class Validation : IValidation
     {
-        //Проверяем корректность имени/фамилии
+        ///<summary>
+        ///Проверяем корректность имени/фамилии
+        ///</summery>
         public bool CheckName(string name)
         {
             bool result = true;
@@ -17,7 +21,9 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Проверяем корректность Email
+        ///<summery>
+        ///Проверяем корректность Email
+        ///</summery>
         public bool CheckEmail(string email)
         {
             Regex EmailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
@@ -28,7 +34,9 @@ namespace ManageStaff.Classes
             return EmailRegex.IsMatch(email);
         }
 
-        //Проверяем корректность даты
+        ///<summery>
+        ///Проверяем корректность даты
+        ///</summery>
         public bool CheckDate(string str, out DateTime dataBirth)
         {
             bool result = true;
@@ -39,7 +47,9 @@ namespace ManageStaff.Classes
             return result;
         }
 
-        //Проверяем корректность введенной зарплаты
+        ///<summery>
+        ///Проверяем корректность введенной зарплаты
+        ///</summery>
         public bool CheckSalary(string str, out decimal salary)
         {
             bool result = true;

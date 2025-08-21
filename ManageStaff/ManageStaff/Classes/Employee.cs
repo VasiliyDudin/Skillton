@@ -1,6 +1,8 @@
 ﻿namespace ManageStaff.Classes
 {
-    //Класс описывающий сущность сотрудника и реализующий методы работы с ним
+    ///<summery>
+    ///Класс описывающий сущность сотрудника и реализующий методы работы с ним
+    ///</summery>
     internal class Employee
     {
         int _employeeID;
@@ -46,13 +48,14 @@
             set => _salary = value;
         }
 
-        //Метод для ввода значений по сотруднику
+        ///<summery>
+        ///Метод для ввода значений по сотруднику
+        ///</summery>
         public Employee InputEmployee()
         {
-            Employee emp = new Employee();
             Validation validator = new Validation(); //Для валидации вводимых значений
-            string fname, lname, email;
-            DateTime data; //Набор переменных соответствующий вводимым значениям
+            string fname, lname, email; //Набор переменных соответствующий вводимым значениям
+            DateTime data;
             decimal salary;
 
             Console.WriteLine("\nДобавление нового сотрудника:");
@@ -64,7 +67,7 @@
                 Console.Write("Имя не может быть пустым. Введите снова: ");
                 fname = Console.ReadLine();
             }
-            emp.FirstName = fname;
+            FirstName = fname;
 
             Console.Write("Фамилия: ");
             lname = Console.ReadLine();
@@ -73,7 +76,7 @@
                 Console.Write("Фамилия не может быть пустой. Введите снова: ");
                 lname = Console.ReadLine();
             }
-            emp.LastName = lname;
+            LastName = lname;
 
             Console.Write("Эл. почта: ");
             email = Console.ReadLine();
@@ -82,23 +85,23 @@
                 Console.Write("Email не валидный. Введите снова: ");
                 email = Console.ReadLine();
             }
-            emp.Email = email;
+            Email = email;
 
             Console.Write("Дата рождения (гггг-мм-дд): ");
             while (!validator.CheckDate(Console.ReadLine(), out data))
             {
                 Console.Write("Неверный формат. Введите дату снова (гггг-мм-дд): ");
             }
-            emp.DateOfBirth = data;
+            DateOfBirth = data;
 
             Console.Write("Зарплата: ");
             while (!validator.CheckSalary(Console.ReadLine(), out salary))
             {
                 Console.Write("Неверный формат. Введите зарплату снова: ");
             }
-            emp.Salary = salary;
+            Salary = salary;
 
-            return emp;
+            return this;
         }
     }
 }

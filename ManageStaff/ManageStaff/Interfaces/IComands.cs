@@ -2,13 +2,15 @@
 
 namespace ManageStaff.interfaces
 {
-    //Интерфейс для реализации команд к БД
+    ///<summery>
+    ///Интерфейс для реализации команд к БД
+    ///</summery>
     internal interface IComands
     {
-        public Task OpenConnectionAsync();
+        public Task OpenConnectionDbAsync();
         public Task<bool> AddEmployeeAsync(Employee empl);
         public Task<bool> ShowStaffAsync();
-        public Task<bool> UpdateEmployeeAsync(string id);
+        public Task<bool?> UpdateEmployeeAsync(string id);
         public Task<bool> DeleteEmployeeAsync(string id);
     }
 }

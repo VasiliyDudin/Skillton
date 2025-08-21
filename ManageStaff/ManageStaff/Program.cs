@@ -4,14 +4,16 @@ namespace ManageStaff
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             MenuConfig menuConf = new MenuConfig();
 
             //Устанавливаем заголовок и пункты меню
-            ConsoleMenu menu = new ConsoleMenu(menuConf.GetMenuTitle(), menuConf.GetMenuItems());
-            Comands cmd = new Comands();
-            await cmd.OpenConnectionAsync(); //Открываем соединение с БД
+            ConsoleMenu menu = new ConsoleMenu();
+            menu.Title = menuConf.GetMenuTitle();
+            menu.MenuItems = menuConf.GetMenuItems();
+            
+            Commands cmd = new Commands();
 
             bool isRun = true;
             while (isRun)
@@ -22,25 +24,23 @@ namespace ManageStaff
                 {
                     case 0:
                         Employee emp = new Employee();
-                        Console.WriteLine(await cmd.AddEmployeeAsync(emp.InputEmployee()) ? "Сотрудник успешно добавлен!" : "Ошибка при добавлении сотрудника!");
+                        Console.WriteLine(cmd.AddEmployeeAsync().GetAwaiter().GetResult());
                         Console.ReadKey(true);
                         break;
                     case 1:
-                        await cmd.ShowStaffAsync();
+                        cmd.ShowStaffAsync();
                         Console.ReadKey(true);
                         break;
                     case 2:
-                        Console.Write("\nВведите ID сотрудника для обновления информации: ");
-                        Console.WriteLine(await cmd.UpdateEmployeeAsync(Console.ReadLine()) ? "Данные сотрудника успешно обновлены!" : "Ошибка при обновлении данных!");
+                        Console.WriteLine(cmd.UpdateEmployeeAsync().GetAwaiter().GetResult());
                         Console.ReadKey(true);
                         break;
                     case 3:
-                        Console.Write("\nВведите ID сотрудника для удаления: ");
-                        Console.WriteLine(await cmd.DeleteEmployeeAsync(Console.ReadLine()) ? "Сотрудник успешно удален!" : "Ошибка при удалении сотрудника!");
+                        Console.WriteLine(cmd.DeleteEmployeeAsync().GetAwaiter().GetResult());
                         Console.ReadKey(true);
                         break;
                     case 4:
-                        cmd.Dispose();
+                        cmd.Exit();
                         isRun = false;
                         break;
                 }

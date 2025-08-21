@@ -3,24 +3,8 @@
   "WorkspaceRootPath": "C:\\Skillton\\Skillton\\ManageStaff\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\classes\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\classes\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\classes\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\classes\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\classes\\comands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\classes\\comands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\classes\\consolemenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\classes\\consolemenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|c:\\skillton\\skillton\\managestaff\\managestaff\\classes\\commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EFC9EC91-C4FC-4CC9-8DB4-C3D042EB297F}|ManageStaff\\ManageStaff.csproj|solutionrelative:managestaff\\classes\\commands.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,64 +22,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Validation.cs",
-              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Validation.cs",
-              "RelativeDocumentMoniker": "ManageStaff\\Classes\\Validation.cs",
-              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Validation.cs",
-              "RelativeToolTip": "ManageStaff\\Classes\\Validation.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAAACQAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-19T13:28:28.911Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Employee.cs",
-              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Employee.cs",
-              "RelativeDocumentMoniker": "ManageStaff\\Classes\\Employee.cs",
-              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Employee.cs",
-              "RelativeToolTip": "ManageStaff\\Classes\\Employee.cs",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAAAGIAAAAgAAAAAAAAAA==",
+              "Title": "Commands.cs",
+              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Commands.cs",
+              "RelativeDocumentMoniker": "ManageStaff\\Classes\\Commands.cs",
+              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Commands.cs",
+              "RelativeToolTip": "ManageStaff\\Classes\\Commands.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-19T13:27:03.938Z",
+              "WhenOpened": "2025-08-21T22:01:55.243Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ConsoleMenu.cs",
-              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\ConsoleMenu.cs",
-              "RelativeDocumentMoniker": "ManageStaff\\Classes\\ConsoleMenu.cs",
-              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\ConsoleMenu.cs",
-              "RelativeToolTip": "ManageStaff\\Classes\\ConsoleMenu.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAAADEAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-18T20:47:27.091Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Comands.cs",
-              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Comands.cs",
-              "RelativeDocumentMoniker": "ManageStaff\\Classes\\Comands.cs",
-              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Classes\\Comands.cs",
-              "RelativeToolTip": "ManageStaff\\Classes\\Comands.cs",
-              "ViewState": "AgIAACwBAAAAAAAAAAAAAAoAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-18T07:51:46.688Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Program.cs",
-              "RelativeDocumentMoniker": "ManageStaff\\Program.cs",
-              "ToolTip": "C:\\Skillton\\Skillton\\ManageStaff\\ManageStaff\\Program.cs",
-              "RelativeToolTip": "ManageStaff\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-16T09:08:21.486Z"
             }
           ]
         }

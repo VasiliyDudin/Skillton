@@ -4,7 +4,9 @@ using System.Collections.Specialized;
 
 namespace ManageStaff.Classes
 {
-    //Класс для получения предустановленных значений меню из конфига
+    ///<summery>
+    ///Класс для получения предустановленных значений меню из конфига
+    ///</summery>
     internal class MenuConfig : IConfig
     {
         const Char _splitter = ';';

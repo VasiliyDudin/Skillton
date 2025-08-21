@@ -1,16 +1,27 @@
 ﻿namespace ManageStaff.Classes
 {
-    //Класс для работы с меню
+    ///<summery>
+    ///Класс для работы с меню
+    ///</summery>
     internal class ConsoleMenu
     {
-        private List<string> _menuItems;
-        private int _index;
-        private string _title;
+        List<string> _menuItems;
+        int _index;
+        string _title;
 
-        public ConsoleMenu(string title, List<string> menuItems)
+        public List<string> MenuItems
         {
-            _title = string.IsNullOrWhiteSpace(title) ? "Меню приложения" : title;
-            _menuItems = menuItems;
+            get => _menuItems;
+            set => _menuItems = value;
+        }
+        public string Title
+        {
+            get => _title;
+            set => _title = value;
+        }
+
+        public ConsoleMenu()
+        {
             _index = 0;
         }
 

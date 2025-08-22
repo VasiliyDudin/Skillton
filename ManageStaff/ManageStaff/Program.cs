@@ -24,7 +24,7 @@ namespace ManageStaff
                 {
                     case 0:
                         Employee emp = new Employee();
-                        Console.WriteLine(cmd.AddEmployeeAsync().GetAwaiter().GetResult());
+                        Console.WriteLine(Task.Run(async () => await cmd.AddEmployeeAsync()).Result);
                         Console.ReadKey(true);
                         break;
                     case 1:
@@ -32,11 +32,11 @@ namespace ManageStaff
                         Console.ReadKey(true);
                         break;
                     case 2:
-                        Console.WriteLine(cmd.UpdateEmployeeAsync().GetAwaiter().GetResult());
+                        Console.WriteLine(Task.Run(async () => await cmd.UpdateEmployeeAsync()).Result);
                         Console.ReadKey(true);
                         break;
                     case 3:
-                        Console.WriteLine(cmd.DeleteEmployeeAsync().GetAwaiter().GetResult());
+                        Console.WriteLine(Task.Run(async () => await cmd.DeleteEmployeeAsync()).Result);
                         Console.ReadKey(true);
                         break;
                     case 4:

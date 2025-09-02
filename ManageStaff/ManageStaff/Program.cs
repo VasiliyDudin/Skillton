@@ -6,48 +6,62 @@ namespace ManageStaff
     {
         static void Main(string[] args)
         {
+            Commands cmd = new Commands();
+        
+            try
+            {
+                var task = Task.Run(async () => await Start(cmd));
+                Task.WaitAll(task);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        
+            Console.WriteLine("Приложение завершено. Нажмите любую клавишу...");
+            Console.ReadKey();
+        }
+        
+        private static async Task Start(Commands cmd)
+        {
             MenuConfig menuConf = new MenuConfig();
-
+        
             //Устанавливаем заголовок и пункты меню
             ConsoleMenu menu = new ConsoleMenu();
             menu.Title = menuConf.GetMenuTitle();
             menu.MenuItems = menuConf.GetMenuItems();
-            
-            Commands cmd = new Commands();
-
+        
             bool isRun = true;
-            while (isRun)
+        
+            do
             {
                 int selectedIndex = menu.Run(); //Запускаем меню
-
+        
                 switch (selectedIndex)
                 {
                     case 0:
                         Employee emp = new Employee();
-                        Console.WriteLine(Task.Run(async () => await cmd.AddEmployeeAsync()).Result);
-                        Console.ReadKey(true);
+                        Console.WriteLine(await cmd.AddEmployeeAsync());
                         break;
                     case 1:
-                        cmd.ShowStaffAsync();
-                        Console.ReadKey(true);
+                        await cmd.ShowStaffAsync();
                         break;
                     case 2:
-                        Console.WriteLine(Task.Run(async () => await cmd.UpdateEmployeeAsync()).Result);
-                        Console.ReadKey(true);
+                        Console.WriteLine(await cmd.UpdateEmployeeAsync());
                         break;
                     case 3:
-                        Console.WriteLine(Task.Run(async () => await cmd.DeleteEmployeeAsync()).Result);
-                        Console.ReadKey(true);
+                        Console.WriteLine(await cmd.DeleteEmployeeAsync());
                         break;
                     case 4:
                         cmd.Exit();
                         isRun = false;
                         break;
                 }
-            }
-
-            Console.WriteLine("Приложение завершено. Нажмите любую клавишу...");
-            Console.ReadKey();
+        
+                if (isRun)
+                    Console.ReadKey(true);
+        
+            } while (isRun);
         }
     }
 }
